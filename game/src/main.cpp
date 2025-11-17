@@ -1,7 +1,11 @@
-#include "engine.h"
+#include <core/Game.h>
 
 int main(int argc, char** argv) {
-    engine_print();
+    core::Game* game = new core::Game();
+
+    if(!game->init("ShadowFall", 1280, 720)) return -1;
+
+    game->run();
 
     return 0;
 }
