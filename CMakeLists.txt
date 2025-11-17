@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Add SDL3 as a submodule
+add_subdirectory(external/SDL3)
+
+
 # Add engine and game modules
 add_subdirectory(engine)
 add_subdirectory(game)
