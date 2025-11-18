@@ -1,6 +1,9 @@
 #pragma once
 #include <SDL3/SDL.h>
 
+#include <input/InputManager.h>
+
+
 namespace core {
     class Application {
         public:
@@ -12,6 +15,8 @@ namespace core {
             virtual void onUpdate(double) = 0;
             virtual void onHandleEvents(const SDL_Event&) = 0;
             virtual void onQuit() = 0;
+
+            input::InputManager& getInput() { return m_input; }
 
         protected:
             SDL_Window* m_window;
@@ -27,5 +32,6 @@ namespace core {
         private:
             bool m_running;
 
+            input::InputManager m_input;
     };
 }

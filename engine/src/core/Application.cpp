@@ -1,6 +1,6 @@
-#include "SDL3/SDL_timer.h"
 #include <core/Application.h>
 #include <iostream>
+
 
 namespace core {
     bool Application::init(const char* title, int w, int h) {
@@ -33,26 +33,31 @@ namespace core {
 
         Uint64 current = SDL_GetTicksNS();
         
-        while(m_running) {
+        while (m_running) {
 
             Uint64 newTime = SDL_GetTicksNS();
             double frameTime = (newTime - current) / 1'000'000'000.0;
             current = newTime;
 
-            if(frameTime > 0.25) frameTime = 0.25;
-            
+            if (frameTime > 0.25) frameTime = 0.25;
+
             accumulator += frameTime;
 
             handleEvents();
-            
-            while(accumulator >= dt) {
+
+            while (accumulator >= dt) {
                 update(dt);
                 accumulator -= dt;
+
+                m_input.nextFrame();
             }
 
             render();
         }
+
+        quit();
     }
+
 
     void Application::render() {
         SDL_SetRenderDrawColor(m_renderer, 120, 120, 120, 255);
@@ -71,10 +76,11 @@ namespace core {
         SDL_Event e;
 
         while(SDL_PollEvent(&e)) {
+            m_input.handleEvent(e);
+
             switch(e.type) {
                 case SDL_EVENT_QUIT:
                     m_running = false;
-                    quit();
                 break;
 
                 default:
