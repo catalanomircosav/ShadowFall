@@ -1,13 +1,15 @@
-#include "SDL3/SDL_gamepad.h"
 #include <core/Application.h>
-#include <iostream>
+#include <core/Logger.h>
 
 namespace core {
     bool Application::init(const char* title, int w, int h) {
+
+        core::Logger::init(core::LogLevel::Trace, false);
+
         if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
-            std::cerr << "SDL Init Error: " << SDL_GetError() << "\n";
+            LOG_ERROR("SDL Init Error: ",SDL_GetError());
             return false;
-        }
+        } else LOG_INFO("SDL initialized.");
 
         int count = 0;
         SDL_JoystickID* pads = SDL_GetGamepads(&count);
@@ -19,19 +21,20 @@ namespace core {
 
         m_window = SDL_CreateWindow(title, w, h, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
         if (!m_window) {
-            std::cerr << "Window creation error: " << SDL_GetError() << "\n";
+            LOG_ERROR("Window creation error: ", SDL_GetError());
             return false;
-        }
+        } else LOG_INFO("Window initialized.");
 
         m_renderer = SDL_CreateRenderer(m_window, nullptr);
         if (!m_renderer) {
-            std::cerr << "Renderer creation error: " << SDL_GetError() << "\n";
+            LOG_ERROR("Renderer creation error: ", SDL_GetError());
             return false;
-        }
+        } else LOG_INFO("Renderer initialized.");
 
         m_running = true;
-        return true;
 
+        LOG_INFO("Engine successfully initialized.");
+        return true;
     }
 
     void Application::run() {

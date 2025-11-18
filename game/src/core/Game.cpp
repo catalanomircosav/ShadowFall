@@ -1,39 +1,39 @@
-#include "SDL3/SDL_gamepad.h"
-#include "SDL3/SDL_mouse.h"
 #include <core/Game.h>
-#include <iostream>
+#include <core/Logger.h>
 
 namespace core {
+
     void Game::onRender() { }
+
     void Game::onUpdate(double dt) {
         auto& input = getInput();
 
         if (input.isKeyPressed(SDL_SCANCODE_SPACE))
-            std::cout << "[KEYBOARD] Space pressed\n";
+            LOG_TRACE("[KEYBOARD] Space pressed");
 
         if (input.isKeyDown(SDL_SCANCODE_SPACE))
-            std::cout << "[KEYBOARD] Holding SPACE\n";
- 
+            LOG_TRACE("[KEYBOARD] Holding SPACE");
+
         if (input.isKeyReleased(SDL_SCANCODE_SPACE))
-            std::cout << "[KEYBOARD] Space released\n";
+            LOG_TRACE("[KEYBOARD] Space released");
 
         if (input.isButtonPressed(SDL_GAMEPAD_BUTTON_SOUTH))
-            std::cout << "[GAMEPAD] Button A pressed\n";
+            LOG_TRACE("[GAMEPAD] Button A pressed");
 
         if (input.isButtonDown(SDL_GAMEPAD_BUTTON_SOUTH))
-            std::cout << "[GAMEPAD] Holding A\n";
+            LOG_TRACE("[GAMEPAD] Holding A");
 
         if (input.isButtonReleased(SDL_GAMEPAD_BUTTON_SOUTH))
-            std::cout << "[GAMEPAD] Button A released\n";
+            LOG_TRACE("[GAMEPAD] Button A released");
 
         if (input.isMousePressed(SDL_BUTTON_MIDDLE))
-            std::cout << "[MOUSE] Middle mouse button pressed\n";
+            LOG_TRACE("[MOUSE] Middle mouse button pressed");
 
         if (input.isMouseDown(SDL_BUTTON_MIDDLE))
-            std::cout << "[MOUSE] Holding middle mouse button\n";
+            LOG_TRACE("[MOUSE] Holding middle mouse button");
 
-        if (input.isMouseReleased(SDL_BUTTON_MIDDLE))   
-            std::cout << "[MOUSE] Middle mouse button released\n";
+        if (input.isMouseReleased(SDL_BUTTON_MIDDLE))
+            LOG_TRACE("[MOUSE] Middle mouse button released");
     }
 
     void Game::onHandleEvents(const SDL_Event& e) { }

@@ -6,6 +6,7 @@ target_include_directories(engine
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/../external/SDL3/include/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../external/spdlog/include/
 )
 
-target_link_libraries(engine PUBLIC SDL3::SDL3)
+target_link_libraries(engine PUBLIC SDL3::SDL3 spdlog::spdlog)
