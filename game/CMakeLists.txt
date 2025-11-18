@@ -9,3 +9,10 @@ target_include_directories(ShadowFall
 )
 
 target_link_libraries(ShadowFall PRIVATE engine)
+
+add_custom_command(
+    TARGET ShadowFall POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+)
