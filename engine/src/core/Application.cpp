@@ -1,30 +1,37 @@
-#include "SDL3/SDL_timer.h"
+#include "SDL3/SDL_gamepad.h"
 #include <core/Application.h>
 #include <iostream>
 
 namespace core {
     bool Application::init(const char* title, int w, int h) {
-        if(!SDL_Init(SDL_INIT_VIDEO)) {
-            std::cerr << "[ENGINE::ERROR] SDL could not be initialized: " << SDL_GetError() << "\n";
+        if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
+            std::cerr << "SDL Init Error: " << SDL_GetError() << "\n";
             return false;
-        } else std::cout << "[ENGINE::INFO] SDL initialized.\n";
+        }
+
+        int count = 0;
+        SDL_JoystickID* pads = SDL_GetGamepads(&count);
+
+        if (count > 0 && SDL_IsGamepad(pads[0]))
+            m_gamepad = SDL_OpenGamepad(pads[0]);
+
+        SDL_free(pads);
 
         m_window = SDL_CreateWindow(title, w, h, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
-        if(!m_window) {
-            std::cerr << "[ENGINE::ERROR] The window could not be initialized: " << SDL_GetError() << "\n";
+        if (!m_window) {
+            std::cerr << "Window creation error: " << SDL_GetError() << "\n";
             return false;
-        } else std::cout << "[ENGINE::INFO] Window initialized.\n";
+        }
 
         m_renderer = SDL_CreateRenderer(m_window, nullptr);
-        if(!m_renderer) {
-            std::cerr << "[ENGINE::ERROR] The renderer could not be initialized: " << SDL_GetError() << "\n";
+        if (!m_renderer) {
+            std::cerr << "Renderer creation error: " << SDL_GetError() << "\n";
             return false;
-        } else std::cout << "[ENGINE::INFO] Renderer initialized.\n";
+        }
 
-        std::cout << "[ENGINE::INFO] Engine initialized successfully.\n";
         m_running = true;
-        
         return true;
+
     }
 
     void Application::run() {
@@ -33,26 +40,31 @@ namespace core {
 
         Uint64 current = SDL_GetTicksNS();
         
-        while(m_running) {
+        while (m_running) {
 
             Uint64 newTime = SDL_GetTicksNS();
             double frameTime = (newTime - current) / 1'000'000'000.0;
             current = newTime;
 
-            if(frameTime > 0.25) frameTime = 0.25;
-            
+            if (frameTime > 0.25) frameTime = 0.25;
+
             accumulator += frameTime;
 
             handleEvents();
-            
-            while(accumulator >= dt) {
+
+            while (accumulator >= dt) {
                 update(dt);
                 accumulator -= dt;
+
+                m_input.nextFrame();
             }
 
             render();
         }
+
+        quit();
     }
+
 
     void Application::render() {
         SDL_SetRenderDrawColor(m_renderer, 120, 120, 120, 255);
@@ -71,10 +83,11 @@ namespace core {
         SDL_Event e;
 
         while(SDL_PollEvent(&e)) {
+            m_input.handleEvent(e);
+
             switch(e.type) {
                 case SDL_EVENT_QUIT:
                     m_running = false;
-                    quit();
                 break;
 
                 default:
@@ -97,6 +110,11 @@ namespace core {
             m_renderer = nullptr;
         }
 
+        if(m_gamepad) {
+            SDL_CloseGamepad(m_gamepad);
+            m_gamepad = nullptr;
+        }
+        
         SDL_Quit();
     }
 }
