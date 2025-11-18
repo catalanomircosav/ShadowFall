@@ -1,10 +1,16 @@
+#include "resources/ResourceType.h"
 #include <core/Application.h>
 #include <core/Logger.h>
+
+#include <managers/ResourceManager.h>
 
 namespace core {
     bool Application::init(const char* title, int w, int h) {
 
         core::Logger::init(core::LogLevel::Trace, false);
+
+        auto text = managers::ResourceManager::load(resources::ResourceType::Texture, "assets/textures/player.png");
+        auto json = managers::ResourceManager::load(resources::ResourceType::JSON, "assets/config/config.json");
 
         if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
             LOG_ERROR("SDL Init Error: ",SDL_GetError());
