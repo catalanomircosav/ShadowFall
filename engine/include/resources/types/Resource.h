@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <resources/ResourceType.h>
+#include <resources/types/ResourceType.h>
 
 namespace resources {
     class Resource {

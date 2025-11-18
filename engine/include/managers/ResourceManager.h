@@ -1,9 +1,8 @@
 #pragma once
-#include "resources/JSONResource.h"
-#include "resources/ResourceType.h"
-#include "resources/TextureResource.h"
 #include <core/Logger.h>
-#include <resources/Resource.h>
+#include <resources/types/Resource.h>
+#include <resources/JSONResource.h>
+#include <resources/TextureResource.h>
 
 namespace managers {
     class ResourceManager { 
@@ -21,6 +20,7 @@ namespace managers {
                     case resources::ResourceType::JSON:
                         res = std::make_shared<resources::JSONResource>(path);
                     break;
+                    
                     default:
                         LOG_ERROR("[ResourceManager] Unsupported resource type for {}", path);
                     break;
@@ -41,7 +41,15 @@ namespace managers {
                 m_cache.clear();
             }
             
+            static void setRenderer(SDL_Renderer* renderer) {
+                s_renderer = renderer;
+            }
+
+            static SDL_Renderer* getRenderer() { return s_renderer; }
+        
         private:
             static inline std::unordered_map<std::string, std::shared_ptr<resources::Resource>> m_cache;
+            
+            static inline SDL_Renderer* s_renderer;
     };
 }

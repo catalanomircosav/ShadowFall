@@ -8,6 +8,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Add SDL3 as a submodule
 add_subdirectory(external/SDL3)
+add_subdirectory(external/SDL3_image)
 add_subdirectory(external/spdlog)
 
 # Add engine and game modules

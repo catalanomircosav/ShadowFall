@@ -11,6 +11,7 @@ namespace core {
             void run();
 
         protected:
+            virtual bool onInit() = 0;
             virtual void onRender() = 0;
             virtual void onUpdate(double) = 0;
             virtual void onHandleEvents(const SDL_Event&) = 0;
