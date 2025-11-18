@@ -1,16 +1,22 @@
 #include <resources/TextureResource.h>
 #include <core/Logger.h>
 #include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+
+#include <managers/ResourceManager.h>
 
 namespace resources {
 
     bool TextureResource::load() {
-        LOG_INFO("[TextureResource] Loading {}", m_path);
+        
+        SDL_Surface* surface  = IMG_Load(m_path.c_str());
+        if(!surface) return false;
 
-        // TODO: Load PNG with SDL_image later
-        m_texture = nullptr;
+        m_texture = SDL_CreateTextureFromSurface(managers::ResourceManager::getRenderer(), surface);
+        if(!m_texture) return false;
+
         m_loaded = true;
-        return true;
+        return m_loaded;
     }
 
     void TextureResource::unload() {

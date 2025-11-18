@@ -1,5 +1,6 @@
 #pragma once
-#include <resources/Resource.h>
+
+#include <resources/types/Resource.h>
 
 namespace resources {
 
