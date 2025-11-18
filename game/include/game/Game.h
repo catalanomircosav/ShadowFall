@@ -1,8 +1,8 @@
 #pragma once
 #include <core/Application.h>
 
-namespace core {
-    class Game : public Application {
+namespace game {
+    class Game : public core::Application {
         public:
             void onRender() override;
             void onUpdate(double) override;

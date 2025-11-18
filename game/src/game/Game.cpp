@@ -1,7 +1,7 @@
-#include <core/Game.h>
+#include <game/Game.h>
 #include <core/Logger.h>
 
-namespace core {
+namespace game {
 
     void Game::onRender() { }
 
