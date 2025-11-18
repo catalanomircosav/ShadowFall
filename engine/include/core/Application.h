@@ -33,5 +33,6 @@ namespace core {
             bool m_running;
 
             input::InputManager m_input;
+            SDL_Gamepad* m_gamepad = nullptr;
     };
 }

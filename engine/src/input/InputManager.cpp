@@ -1,5 +1,5 @@
 #include <input/InputManager.h>
-
+#include <iostream>
 namespace input {
     InputManager::InputManager() {
         m_keys_down.fill(false);
